@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "848740351439",
+    "project_id": "notes-flutter-course-2024",
+    "storage_bucket": "notes-flutter-course-2024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848740351439:android:e4fde1f543e506d58326ba",
+        "android_client_info": {
+          "package_name": "com.bianca.notes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK2WEjH05WlOR-fEEv7qpVH4GW2wguJZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
