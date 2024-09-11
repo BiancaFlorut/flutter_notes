@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
+import 'env.dart';
+
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
@@ -24,7 +26,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        return Env.android;
       case TargetPlatform.iOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for ios - '
@@ -52,11 +54,5 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCK2WEjH05WlOR-fEEv7qpVH4GW2wguJZE',
-    appId: '1:848740351439:android:e4fde1f543e506d58326ba',
-    messagingSenderId: '848740351439',
-    projectId: 'notes-flutter-course-2024',
-    storageBucket: 'notes-flutter-course-2024.appspot.com',
-  );
+
 }
