@@ -42,4 +42,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Ignore lib/env.dart
 /lib/env.dart
