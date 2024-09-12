@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:notes/constants/routs.dart';
-
+import 'package:notes/services/auth/auth_exceptions.dart';
+import 'package:notes/services/auth/auth_service.dart';
 import '../utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   State<StatefulWidget> createState() => _LoginViewState();
@@ -62,11 +61,13 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: email, password: password);
-                final user = FirebaseAuth.instance.currentUser;
+                await AuthService.firebase().logIn(
+                  email: email,
+                  password: password,
+                );
+                final user = AuthService.firebase().currentUser;
                 if (context.mounted) {
-                  if (user?.emailVerified ?? false) {
+                  if (user?.isEmailVerified ?? false) {
                     Navigator.of(context)
                         .pushNamedAndRemoveUntil(notesRoute, (route) => false);
                   } else {
@@ -74,29 +75,16 @@ class _LoginViewState extends State<LoginView> {
                         verifyEmailRoute, (route) => false);
                   }
                 }
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'invalid-credential') {
-                  if (context.mounted) {
-                    await showErrorDialog(
-                      context,
-                      'Invalid credentials. Please try again.',
-                    );
-                  }
-                } else {
-                  if (context.mounted) {
-                    await showErrorDialog(
-                      context,
-                      'Error occurred while logging in. ${e.message}',
-                    );
-                  }
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  await showErrorDialog(
-                    context,
-                    'Error occurred while logging in. ${e.toString()}',
-                  );
-                }
+              } on InvalidCredentialsException {
+                await showErrorDialog(
+                  context,
+                  'Invalid credentials. Please try again.',
+                );
+              } on GenericAuthException {
+                await showErrorDialog(
+                  context,
+                  'Error occurred while logging in.',
+                );
               }
             },
             child: const Text("Login")),

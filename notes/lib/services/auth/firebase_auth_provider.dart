@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:notes/firebase_options.dart';
 import 'package:notes/services/auth/auth_user.dart';
 import 'package:notes/services/auth/auth_exceptions.dart';
 import 'auth_provider.dart';
@@ -7,7 +9,14 @@ import 'package:firebase_auth/firebase_auth.dart'
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
-  AuthUser get currentUser {
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
+  @override
+  AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       return AuthUser.fromFirebase(user);
@@ -47,7 +56,11 @@ class FirebaseAuthProvider implements AuthProvider {
         password: password,
       );
       final user = currentUser;
-      return user;
+      if (user != null) {
+        return user;
+      } else {
+        throw UserNotLoggedInException();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw WeakPasswordException();
@@ -74,7 +87,11 @@ class FirebaseAuthProvider implements AuthProvider {
         password: password,
       );
       final user = currentUser;
-      return user;
+      if (user != null) {
+        return user;
+      } else {
+        throw UserNotLoggedInException();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-credential') {
         throw InvalidCredentialsException();
