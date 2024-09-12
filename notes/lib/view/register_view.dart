@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
 
 import 'package:notes/constants/routs.dart';
+
+import '../utilities/show_error_dialog.dart';
 
 
 class RegisterView extends StatefulWidget {
@@ -67,20 +68,32 @@ class _RegisterViewState extends State<RegisterView> {
                   final email = _email.text;
                   final password = _password.text;
                   try {
-                    final userCredential = await FirebaseAuth.instance
+                    await FirebaseAuth.instance
                         .createUserWithEmailAndPassword(
                         email: email, password: password);
-                    devtools.log(userCredential.toString());
+                    final user = FirebaseAuth.instance.currentUser;
+                    await user!.sendEmailVerification();
+                    Navigator.of(context).pushNamed(verifyEmailRoute);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
-                      devtools.log('The password provided is too weak.');
+                      if (context.mounted) {
+                        await showErrorDialog(
+                            context, 'The password provided is too weak.');
+                      }
                     } else if (e.code == 'email-already-in-use') {
-                      devtools.log('The account already exists for that email.');
+                      if (context.mounted) {
+                        await showErrorDialog(
+                            context, 'The account already exists for that email.');
+                      }
                     } else if (e.code == 'invalid-email') {
-                      devtools.log('The email provided is not valid.');
+                      if (context.mounted) {
+                        await showErrorDialog(context, 'The email provided is not valid.');
+                      }
                     }
                   } catch (e) {
-                    devtools.log(e.toString());
+                    if (context.mounted) {
+                      await showErrorDialog(context, e.toString());
+                    }
                   }
                 },
                 child: const Text("Register")

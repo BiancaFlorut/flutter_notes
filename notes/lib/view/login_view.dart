@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
 
 import 'package:notes/constants/routs.dart';
 
@@ -65,25 +64,32 @@ class _LoginViewState extends State<LoginView> {
               try {
                 await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: email, password: password);
+
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil(notesRoute, (route) => false);
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'invalid-credential') {
-                  await showErrorDialog(
-                    context,
-                    'Invalid credentials. Please try again.',
-                  );
+                  if (context.mounted) {
+                    await showErrorDialog(
+                      context,
+                      'Invalid credentials. Please try again.',
+                    );
+                  }
                 } else {
-                  await showErrorDialog(
-                    context,
-                    'Error occurred while logging in. ${e.message}',
-                  );
+                  if (context.mounted) {
+                    await showErrorDialog(
+                      context,
+                      'Error occurred while logging in. ${e.message}',
+                    );
+                  }
                 }
               } catch (e) {
-                await showErrorDialog(
-                  context,
-                  'Error occurred while logging in. ${e.toString()}',
-                );
+                if (context.mounted) {
+                  await showErrorDialog(
+                    context,
+                    'Error occurred while logging in. ${e.toString()}',
+                  );
+                }
               }
             },
             child: const Text("Login")),
