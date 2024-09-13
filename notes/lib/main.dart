@@ -4,7 +4,6 @@ import 'package:notes/view/login_view.dart';
 import 'package:notes/view/notes_view.dart';
 import 'package:notes/view/register_view.dart';
 import 'package:notes/view/verify_email.dart';
-import 'dart:developer' as devtools show log;
 import 'constants/routs.dart';
 
 void main() {
@@ -35,7 +34,6 @@ class HomePage extends StatelessWidget {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
             final currentUser = AuthService.firebase().currentUser;
-            devtools.log(currentUser.toString());
             if (currentUser != null) {
               if (currentUser.isEmailVerified) {
                 return const NotesView();
