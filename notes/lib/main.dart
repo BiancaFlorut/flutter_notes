@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:notes/services/auth/auth_service.dart';
 import 'package:notes/view/login_view.dart';
-import 'package:notes/view/notes_view.dart';
+import 'package:notes/view/notes/new_notes_view.dart';
+import 'package:notes/view/notes/notes_view.dart';
 import 'package:notes/view/register_view.dart';
 import 'package:notes/view/verify_email.dart';
 import 'constants/routs.dart';
@@ -10,8 +12,11 @@ void main() {
   runApp(MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
+      primarySwatch: Colors.blue,
+      appBarTheme: const AppBarTheme(
+        iconTheme: IconThemeData(color: Colors.black),
+        color: Colors.deepPurpleAccent,
+      ),
     ),
     home: const HomePage(),
     routes: {
@@ -19,6 +24,7 @@ void main() {
       registerRoute: (context) => const RegisterView(),
       notesRoute: (context) => const NotesView(),
       verifyEmailRoute: (context) => const VerifyEmailView(),
+      newNoteRoute: (context) => const NewNoteView(),
     },
   ));
 }
