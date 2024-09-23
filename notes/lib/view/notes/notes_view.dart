@@ -32,7 +32,7 @@ class _NotesViewState extends State<NotesView> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(newNoteRoute);
+              Navigator.of(context).pushNamed(createUpdateNoteRoute);
             },
             icon: const Icon(Icons.add),
           ),
@@ -42,10 +42,9 @@ class _NotesViewState extends State<NotesView> {
                 final shouldLogout = await showLogoutDialog(context);
                 if (shouldLogout) {
                   await AuthService.firebase().logOut();
-                  if (context.mounted) {
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil(loginRoute, (_) => false);
-                  }
+
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(loginRoute, (_) => false);
                 }
                 break;
             }
@@ -74,6 +73,12 @@ class _NotesViewState extends State<NotesView> {
                         final allNotes = snapshot.data as List<DatabaseNote>;
                         return NotesListView(
                             notes: allNotes,
+                            onTap: (note) {
+                              Navigator.of(context).pushNamed(
+                                createUpdateNoteRoute,
+                                arguments: note,
+                              );
+                            },
                             onDeleteNote: (note) async {
                               await _notesService.deleteNote(id: note.id);
                             });
