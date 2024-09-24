@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/constants/routs.dart';
+import 'package:notes/main.dart';
 import 'package:notes/services/auth/auth_service.dart';
+import 'package:notes/services/auth/bloc/auth_bloc.dart';
+
+import '../services/auth/bloc/auth_event.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -19,14 +24,13 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
           const Text("We've sent you an email verification. Please open it to verify your account."),
           const Text("If you haven't received a verification email yet, press the button below to resend it."),
           TextButton(
-              onPressed: () async {
-                await AuthService.firebase().sendEmailVerification();
+              onPressed: () {
+                context.read<AuthBloc>().add(const AuthEventSendEmailVerification());
               },
               child: const Text("Send email verification")),
           TextButton(
               onPressed: () async {
-                await AuthService.firebase().logOut();
-                Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (_) => false);
+                context.read<AuthBloc>().add(const AuthEventLogOut());
               },
               child: const Text("Restart"))
         ],

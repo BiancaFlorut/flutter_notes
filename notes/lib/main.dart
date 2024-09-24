@@ -8,7 +8,7 @@ import 'package:notes/view/login_view.dart';
 import 'package:notes/view/notes/create_update_notes_view.dart';
 import 'package:notes/view/notes/notes_view.dart';
 import 'package:notes/view/register_view.dart';
-import 'package:notes/view/verify_email.dart';
+import 'package:notes/view/verify_email_view.dart';
 import 'constants/routs.dart';
 
 void main() {
@@ -26,10 +26,6 @@ void main() {
       child:  HomePage(),
     ),
     routes: {
-      loginRoute: (context) => const LoginView(),
-      registerRoute: (context) => const RegisterView(),
-      notesRoute: (context) => const NotesView(),
-      verifyEmailRoute: (context) => const VerifyEmailView(),
       createUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
     },
   ));
@@ -48,7 +44,10 @@ class HomePage extends StatelessWidget {
         return const VerifyEmailView();
       } else if (state is AuthStateLoggedOut) {
         return const LoginView();
-      } else {
+      } else if (state is AuthStateRegistering) {
+        return const RegisterView();
+      }
+      else {
         return Scaffold(
           body: Center(
             child: Column(
@@ -61,6 +60,8 @@ class HomePage extends StatelessWidget {
           ),
         );
       }
-    });
+    }
+    );
   }
+
 }
