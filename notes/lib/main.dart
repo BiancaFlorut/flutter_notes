@@ -49,8 +49,16 @@ class HomePage extends StatelessWidget {
       } else if (state is AuthStateLoggedOut) {
         return const LoginView();
       } else {
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
+        return Scaffold(
+          body: Center(
+            child: Column(
+              children: [
+                const CircularProgressIndicator(),
+                Text("Loading..." + state.toString()),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
         );
       }
     });

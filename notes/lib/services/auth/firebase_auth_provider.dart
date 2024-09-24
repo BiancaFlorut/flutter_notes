@@ -21,7 +21,7 @@ class FirebaseAuthProvider implements AuthProvider {
     if (user != null) {
       return AuthUser.fromFirebase(user);
     } else {
-      throw UserNotLoggedInException();
+      return null;
     }
   }
 
