@@ -45,7 +45,8 @@ class _RegisterViewState extends State<RegisterView> {
           } else if (state.exception is GenericAuthException) {
             await showErrorDialog(context, 'Failed to register');
           } else if (state.exception is UserNotLoggedInException) {
-            await showErrorDialog(context, 'Could not find a user with that email');
+            await showErrorDialog(
+                context, 'Could not find a user with that email');
           }
         }
       },
@@ -53,47 +54,59 @@ class _RegisterViewState extends State<RegisterView> {
         appBar: AppBar(
           title: const Text("Register"),
         ),
-        body: Column(children: [
-          TextField(
-            controller: _email,
-            enableSuggestions: false,
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(8.0),
-                hintStyle: TextStyle(color: Colors.grey),
-                hintText: "Enter your email here"),
-          ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(8.0),
-                hintStyle: TextStyle(color: Colors.grey),
-                hintText: "Enter your password here"),
-          ),
-          TextButton(
-              onPressed: () async {
-                final email = _email.text;
-                final password = _password.text;
-                context.read<AuthBloc>().add(
-                  AuthEventRegister(
-                    email,
-                    password,
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            TextField(
+              controller: _email,
+              enableSuggestions: false,
+              autocorrect: false,
+              autofocus: true,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(8.0),
+                  hintStyle: TextStyle(color: Colors.grey),
+                  hintText: "Enter your email here"),
+            ),
+            TextField(
+              controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(8.0),
+                  hintStyle: TextStyle(color: Colors.grey),
+                  hintText: "Enter your password here"),
+            ),
+            Center(
+              child: Column(
+                children: [
+                  TextButton(
+                    onPressed: () async {
+                      final email = _email.text;
+                      final password = _password.text;
+                      context.read<AuthBloc>().add(
+                            AuthEventRegister(
+                              email,
+                              password,
+                            ),
+                          );
+                    },
+                    child: const Text("Register"),
                   ),
-                );
-              },
-              child: const Text("Register")),
-          TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(const AuthEventLogOut());
-              },
-              child: const Text("Already registered? Login here")),
-        ]),
+                  TextButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(const AuthEventLogOut());
+                    },
+                    child: const Text("Already registered? Login here"),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }
 }
-

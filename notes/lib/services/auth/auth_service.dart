@@ -34,7 +34,11 @@ class AuthService implements AuthProvider {
   AuthUser? get currentUser => provider.currentUser;
 
   @override
-  Future<void> initialize() {
-    return provider.initialize();
-  }
+  Future<void> initialize() => provider.initialize();
+
+
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) => provider.sendPasswordReset(toEmail: toEmail);
+
+
 }

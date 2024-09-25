@@ -58,4 +58,5 @@ class AuthStateForgotPassword extends AuthState {
     required this.hasSentEmail,
     required super.isLoading,
   });
+  }
 }
